@@ -1,0 +1,32 @@
+{
+    "name": "stagee-frontend",
+    "private": true,
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start"
+    },
+    "dependencies": {
+        "@copilotkit/react-core": "^1.64.1",
+        "@copilotkit/react-ui": "^1.64.1",
+        "@tremor/react": "^3.18.7",
+        "framer-motion": "^11.0.0",
+        "lottie-react": "^2.4.1",
+        "lucide-react": "^0.446.0",
+        "next": "^14.2.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-markdown": "^10.1.0",
+        "remark-gfm": "^4.0.1"
+    },
+    "devDependencies": {
+        "@tailwindcss/typography": "^0.5.20",
+        "@types/node": "^22.0.0",
+        "@types/react": "^18.3.3",
+        "autoprefixer": "^10.4.19",
+        "postcss": "^8.4.39",
+        "tailwindcss": "^3.4.7",
+        "typescript": "^5.5.4"
+    }
+}

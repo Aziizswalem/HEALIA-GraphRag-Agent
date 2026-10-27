@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ─── Menu racine ────────────────────────────────────────────── -->
+        <menuitem
+            id="menu_healio_root"
+            name="Assistant IA Healia"
+            sequence="90"
+            web_icon="healio_chatbot,static/description/icon.png"
+            groups="healio_chatbot.group_healio_user"
+        />
+
+        <!-- ─── Sous-menu : Chat ──────────────────────────────────────── -->
+        <menuitem
+            id="menu_healio_chat"
+            name="💬 Poser une question"
+            parent="menu_healio_root"
+            action="action_healio_chat"
+            sequence="10"
+            groups="healio_chatbot.group_healio_user"
+        />
+
+        <!-- ─── Sous-menu : Historique ────────────────────────────────── -->
+        <menuitem
+            id="menu_healio_history"
+            name="📋 Historique des sessions"
+            parent="menu_healio_root"
+            action="action_healio_sessions_list"
+            sequence="20"
+            groups="healio_chatbot.group_healio_user"
+        />
+
+        <!-- ─── Sous-menu : Configuration (admin uniquement) ─────────── -->
+        <menuitem
+            id="menu_healio_config"
+            name="⚙️ Configuration"
+            parent="menu_healio_root"
+            action="action_healio_config_server"
+            sequence="30"
+            groups="healio_chatbot.group_healio_admin"
+        />
+    </data>
+</odoo>

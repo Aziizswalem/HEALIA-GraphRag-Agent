@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             VUE FORMULAIRE : Configuration FastAPI
+             ═══════════════════════════════════════════════════════════════ -->
+        <record id="view_healio_config_form" model="ir.ui.view">
+            <field name="name">healio.config.form</field>
+            <field name="model">healio.config</field>
+            <field name="arch" type="xml">
+                <form string="Configuration du chatbot Healia">
+                    <header>
+                        <button
+                            name="action_test_connection"
+                            type="object"
+                            string="🔌 Tester la connexion"
+                            class="btn-primary"
+                        />
+                        <field name="health_status" widget="statusbar"
+                               statusbar_visible="unknown,ok,error"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>Intégration Healia FastAPI</h1>
+                        </div>
+
+                        <group string="🔗 Connexion au backend FastAPI">
+                            <field name="fastapi_url"
+                                   placeholder="http://192.168.1.10:8000"/>
+                            <field name="fastapi_api_key"
+                                   password="True"
+                                   placeholder="Laisser vide si pas de clé API"/>
+                            <field name="request_timeout"/>
+                        </group>
+
+                        <group string="🖼️ Interface utilisateur">
+                            <field name="use_iframe"/>
+                            <field name="frontend_url"
+                                   attrs="{'invisible': [('use_iframe', '=', False)]}"
+                                   placeholder="http://192.168.1.10:3000"/>
+                        </group>
+
+                        <group string="📊 Statut">
+                            <field name="last_health_check" readonly="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action : ouvrir la configuration -->
+        <record id="action_healio_config_server" model="ir.actions.server">
+            <field name="name">Configuration Healia</field>
+            <field name="model_id" ref="model_healio_config"/>
+            <field name="state">code</field>
+            <field name="code">
+config = env['healio.config'].get_config()
+action = {
+    'type': 'ir.actions.act_window',
+    'name': 'Configuration Healia',
+    'res_model': 'healio.config',
+    'res_id': config.id,
+    'view_mode': 'form',
+    'target': 'current',
+}
+            </field>
+        </record>
+
+    </data>
+</odoo>

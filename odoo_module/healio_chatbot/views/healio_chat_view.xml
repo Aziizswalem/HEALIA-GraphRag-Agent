@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             VUE PRINCIPALE : Interface de chat fullscreen
+             ═══════════════════════════════════════════════════════════════ -->
+        <record id="view_healio_chat_client_action" model="ir.ui.view">
+            <field name="name">healio.chat.client.action</field>
+            <field name="model">healio.chat.session</field>
+            <field name="arch" type="xml">
+                <form>
+                    <style>
+                        /* Garder uniquement la navbar principale */
+                        .o_main_navbar {
+                            display: flex !important;
+                            background-color: #115e59 !important;
+                        }
+                        .o_main_navbar > a,
+                        .o_main_navbar > button,
+                        .o_menu_apps {
+                            color: #fff !important;
+                        }
+                        .o_main_navbar .o_user_menu {
+                            margin-left: auto !important;
+                        }
+                        /* Cacher toute autre barre d'outils */
+                        .o_sub_menu,
+                        .o_menu_sections,
+                        .o_form_statusbar,
+                        .o_form_sheet_bg,
+                        .o_control_panel {
+                            display: none !important;
+                        }
+                        #healio_chatbot_page {
+                            position: absolute !important;
+                            top: 0 !important;
+                            left: 0 !important;
+                            right: 0 !important;
+                            bottom: 0 !important;
+                            background: #fff;
+                        }
+                        .o_form_view {
+                            background: #fff !important;
+                            min-height: 0 !important;
+                        }
+                        .o_form_view .o_form_sheet {
+                            min-height: 0 !important;
+                            max-width: none !important;
+                            border: none !important;
+                            box-shadow: none !important;
+                            padding: 0 !important;
+                            margin: 0 !important;
+                            background: #fff !important;
+                        }
+                    </style>
+                    <div id="healio_chatbot_page">
+                        <div id="healio_chatbot_mount"
+                             style="height: 100%; width: 100%;"
+                             data-proxy-url="/healio/chat"
+                             data-config-url="/healio/config/ui"
+                             data-session-url="/healio/session">
+                            <div id="healio_loading"
+                                 style="display:flex; align-items:center; justify-content:center; height:100%;">
+                                <span>Chargement du chatbot IA...</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action : ouvrir le chat -->
+        <record id="action_healio_chat" model="ir.actions.act_window">
+            <field name="name">Assistant IA Healia</field>
+            <field name="res_model">healio.chat.session</field>
+            <field name="view_mode">form</field>
+            <field name="target">current</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════
+             VUE LISTE : Historique de toutes les sessions
+             ═══════════════════════════════════════════════════════════════ -->
+        <record id="view_healio_sessions_list" model="ir.ui.view">
+            <field name="name">healio.chat.session.list</field>
+            <field name="model">healio.chat.session</field>
+            <field name="arch" type="xml">
+                <tree string="Sessions de chat" create="false">
+                    <field name="display_name"/>
+                    <field name="user_id"/>
+                    <field name="message_count"/>
+                    <field name="last_message_at"/>
+                    <field name="last_question"/>
+                    <field name="fastapi_session_id" optional="hide"/>
+                </tree>
+            </field>
+        </record>
+
+        <!-- Vue formulaire détail session -->
+        <record id="view_healio_session_form" model="ir.ui.view">
+            <field name="name">healio.chat.session.form</field>
+            <field name="model">healio.chat.session</field>
+            <field name="arch" type="xml">
+                <form string="Détail de la session">
+                    <header>
+                        <button
+                            name="action_clear_session"
+                            type="object"
+                            string="🗑️ Réinitialiser la session"
+                            class="btn-secondary"
+                            confirm="Cela effacera tout l'historique de cette session. Continuer ?"
+                        />
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="user_id" readonly="1"/>
+                            <field name="fastapi_session_id" readonly="1"/>
+                            <field name="message_count" readonly="1"/>
+                            <field name="last_message_at" readonly="1"/>
+                        </group>
+                        <notebook>
+                            <page string="Dernière conversation">
+                                <group>
+                                    <field name="last_question" readonly="1"
+                                           widget="text"/>
+                                    <field name="last_answer" readonly="1"
+                                           widget="text"/>
+                                </group>
+                            </page>
+                            <page string="Historique JSON (debug)">
+                                <field name="history_json" readonly="1"
+                                       widget="text"
+                                       groups="healio_chatbot.group_healio_admin"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action : liste des sessions -->
+        <record id="action_healio_sessions_list" model="ir.actions.act_window">
+            <field name="name">Historique des sessions</field>
+            <field name="res_model">healio.chat.session</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_my_sessions': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Aucune session de chat pour le moment.
+                    Démarrez une conversation depuis le menu « Poser une question ».
+                </p>
+            </field>
+        </record>
+
+        <!-- Filtre de recherche par défaut (mes sessions) -->
+        <record id="view_healio_session_search" model="ir.ui.view">
+            <field name="name">healio.chat.session.search</field>
+            <field name="model">healio.chat.session</field>
+            <field name="arch" type="xml">
+                <search string="Rechercher des sessions">
+                    <field name="user_id"/>
+                    <field name="last_question"/>
+                    <filter
+                        name="my_sessions"
+                        string="Mes sessions"
+                        domain="[('user_id', '=', uid)]"
+                    />
+                    <filter
+                        name="all_sessions"
+                        string="Toutes les sessions"
+                        domain="[]"
+                        groups="healio_chatbot.group_healio_admin"
+                    />
+                    <group expand="0" string="Grouper par">
+                        <filter name="group_user" string="Utilisateur"
+                                context="{'group_by': 'user_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</odoo>

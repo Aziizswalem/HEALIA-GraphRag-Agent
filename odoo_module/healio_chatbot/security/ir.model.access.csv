@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_healio_config_admin,healio.config admin,model_healio_config,healio_chatbot.group_healio_admin,1,1,1,1
+access_healio_config_user,healio.config user,model_healio_config,healio_chatbot.group_healio_user,1,0,0,0
+access_healio_chat_session_admin,healio.chat.session admin,model_healio_chat_session,healio_chatbot.group_healio_admin,1,1,1,1
+access_healio_chat_session_user,healio.chat.session user,model_healio_chat_session,healio_chatbot.group_healio_user,1,1,1,0

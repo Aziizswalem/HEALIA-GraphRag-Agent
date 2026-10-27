@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Healia"
+version = "0.1.0"
+description = "Health insurance GraphRAG agent (LangGraph + Neo4j)"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "langgraph>=0.2.0",
+    "neo4j>=5.0",
+    "groq>=0.4.0",
+    "anthropic>=0.30.0",
+    "openai>=1.0.0",
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.0",
+    "langfuse>=4.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6.0",
+    "mypy>=1.10.0",
+    "pytest>=8.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = [
+    "agent*",
+    "api*",
+    "config*",
+    "graph*",
+    "llm*",
+    "memory*",
+    "guardrails*",
+    "observability*",
+    "models*",
+    "repository*",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.pyright]
+venvPath = "."
+venv = "venv"

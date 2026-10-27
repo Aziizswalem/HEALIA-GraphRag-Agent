@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Catégorie de module -->
+        <record id="module_category_healio" model="ir.module.category">
+            <field name="name">Healia</field>
+            <field name="description">Modules pour l'assistant IA Healia.</field>
+            <field name="sequence">100</field>
+        </record>
+
+        <!-- Groupe utilisateur standard -->
+        <record id="group_healio_user" model="res.groups">
+            <field name="name">Utilisateur Chatbot</field>
+            <field name="category_id" ref="module_category_healio"/>
+            <field name="comment">
+                Peut utiliser le chatbot IA Healia pour poser des questions
+                en langage naturel sur les données de santé.
+            </field>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Groupe administrateur -->
+        <record id="group_healio_admin" model="res.groups">
+            <field name="name">Administrateur Chatbot</field>
+            <field name="category_id" ref="module_category_healio"/>
+            <field name="implied_ids" eval="[(4, ref('group_healio_user'))]"/>
+            <field name="comment">
+                Peut configurer l'intégration Healia (URL FastAPI, clé API)
+                et consulter l'historique de toutes les sessions.
+            </field>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+    </data>
+</odoo>

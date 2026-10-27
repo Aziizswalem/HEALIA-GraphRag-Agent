@@ -1,0 +1,20 @@
+services:
+  web:
+    image: odoo:15.0
+    depends_on:
+      - db
+    ports:
+      - "8069:8069"
+    volumes:
+      - ./healio_chatbot:/mnt/extra-addons/healio_chatbot
+    environment:
+      - HOST=db
+      - USER=odoo
+      - PASSWORD=odoo
+
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
